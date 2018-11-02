@@ -1,7 +1,4 @@
-# machine_learning_repository
-Aprendizagem de Máquina's projects repository
-
-This is the AM's 2018.2 project repository.
+# Aprendizagem de Máquina's projects repository
 
 ## Description
 
