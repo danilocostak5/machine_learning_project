@@ -195,7 +195,7 @@ if __name__ == "__main__":
     from load_data import Dataset
 
 
-    datadir='/home/dcp2/Documents/AM/segmentation_2.test'
+    datadir='segmentation_2.test'
     df = pd.read_csv(datadir, sep=',')
     mydata = Dataset()
     mydata.load(df, 'rgb')

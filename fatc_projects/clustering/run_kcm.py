@@ -20,8 +20,7 @@ def rand_score(sef, X, y, clusters):
     return adjusted_rand_score(y, labels_pred)
 
 if __name__ == '__main__':
-    datadir='/home/dcp2/Documents/UFPE/Disciplinas/machine_learning/'\
-            'machine_learning_repository/fatc_projects/clustering/segmentation_2.test'
+    datadir='segmentation_2.test'
 
     df = pd.read_csv(datadir, sep=',')
     mydata = Dataset()

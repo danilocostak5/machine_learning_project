@@ -42,7 +42,7 @@ class Dataset(object):
 
 if __name__ == '__main__':
 
-    datadir='/home/dcp2/Documents/AM/segmentation_2.test'
+    datadir='segmentation_2.test'
     X, y = [], []
 
     with open(datadir) as csvfile:
