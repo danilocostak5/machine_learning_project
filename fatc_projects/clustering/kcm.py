@@ -2,6 +2,7 @@
 
 import numpy as np
 from copy import deepcopy
+from scipy.spatial import distance
 from sklearn.metrics.pairwise import euclidean_distances
 
 # Espera receber dados = dados.iloc[:].values
@@ -11,7 +12,7 @@ class KCM_F_GH(object):
     def __init__(self, c, p, data):
         self.c = c
         self.p = p
-        self.X, self.y = data.X.values, data.y
+        self.X, self.y = data.X, data.y
         self.gamma = 0.
         self.hp = None # variances vector
         self.clusters = None
@@ -66,20 +67,50 @@ class KCM_F_GH(object):
         self.calc_gamma()
         self.init_hiperparams()
         self.init_clusters()
-        self.calc_kernel_dist_matrix()
+        # self.calc_kernel_dist_matrix()
+
         # print(np.where(self.K_dist_mat == 0 ))
         # exit()
         # inicializa o vetor de protótipos distintos randomicamente
-        prot_indexes = np.random.choice(np.arange(len(self.X)), self.c, replace=False)
+        clusters_ref = deepcopy(self.clusters)
+        for i, k in zip(self.y, range(len(self.X))):
+            # print("Element {:4d} ==> Cluster {}".format(k, i))
+            clusters_ref[i].append(k)
+
+        len_clusters = []
+        for i in range(self.c):
+            len_clusters.append(len(clusters_ref[i]))
+        print("Clusters size ==> {}".format(len_clusters))
+
+        prot_indexes = []
+        for i in range(self.c):
+            idx = np.random.choice(np.arange(len(clusters_ref[i])), 1)
+            prot_indexes.append(clusters_ref[i][idx[0]])
+
+        # print("Testing...")
+        # for i in range(self.c):
+        #     print("Prototype {} ==> Cluster {} - {}".
+        #             format(
+        #                 prot_indexes[i],
+        #                 i,
+        #                 "yes" if prot_indexes[i] in clusters_ref[i] else "no"
+        #             ))
 
         for k in range(len(self.X)):
             results = []
             for i in prot_indexes:
-                results.append(self.K_dist_mat[k, i])
+                # results.append(self.calc_kernel(self.X[k], self.X[i])) if k != i else results.append(0.)
+                results.append(distance.euclidean(self.X[k], self.X[i])) if k != i else results.append(0.)
+
             index_min_dist = np.argmin(results) # o objeto será atribuido ao cluster que possuir a menor distância
             # print(self.clusters)
             self.clusters[index_min_dist].append(k)
             self.obj_to_cluster[k] = index_min_dist
+
+        len_clusters = []
+        for i in range(self.c):
+            len_clusters.append(len(self.clusters[i]))
+        print("Clusters size ==> {}".format(len_clusters))
 
     # def __object_against_cluster_wsum(self, k, c):
     #     """Executa o somatorio poderado do objeto k contra todos em um cluster c da equação 24 com relação às features. Resultado é ponderado pela cardinalidade do cluster.
@@ -98,7 +129,8 @@ class KCM_F_GH(object):
         res = np.zeros(self.p)
         for l in self.clusters[c]:
             for r in self.clusters[c]:
-                res += self.K_dist_mat[l][r] * np.power(self.X[l] - self.X[r], 2)
+                # res += self.K_dist_mat[l, r] * np.power(self.X[l] - self.X[r], 2)
+                res += self.calc_kernel(self.X[l], self.X[r]) * np.power(self.X[l] - self.X[r], 2) if l != r else 0.
         # return res / np.power(len(self.clusters[c]), 2)
         return res / len(self.clusters[c])
 
@@ -120,7 +152,8 @@ class KCM_F_GH(object):
         """
         res = 0.
         for l in self.clusters[c]:
-            res += self.K_dist_mat[k][l]
+            # res += self.K_dist_mat[k, l]
+            res += self.calc_kernel(self.X[k], self.X[l]) if k != l else 0.
         return (2 * res) / len(self.clusters[c])
 
     def __all_against_all_cluster_sum(self):
@@ -131,7 +164,8 @@ class KCM_F_GH(object):
         for i in range(self.c):
             for l in self.clusters[i]:
                 for r in self.clusters[i]:
-                    res[i] += self.K_dist_mat[l][r]
+                    # res[i] += self.K_dist_mat[l, r]
+                    res[i] += self.calc_kernel(self.X[l], self.X[r]) if l != r else 0.
             res[i] /= np.power(len(self.clusters[i]), 2)
         return res
 
@@ -189,6 +223,10 @@ class KCM_F_GH(object):
             for k in self.clusters[i]:
                 result += 1 - self.__object_against_cluster_sum(k, i) + self.part2[i]
         return result
+
+    def rand_score(self):
+        return adjusted_rand_score(labels_true=self.y,
+                labels_pred=self.obj_to_cluster.values())
 
 if __name__ == "__main__":
     import pandas as pd

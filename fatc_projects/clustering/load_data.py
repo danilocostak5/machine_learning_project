@@ -20,11 +20,11 @@ class Dataset(object):
 
     def load(self, df, view='all'):
         if view == 'all':
-            self.X = df.iloc[:, 1:]
+            self.X = df.iloc[:, 1:].values
         elif view == 'shape':
-            self.X = df.iloc[:, 1:9]
+            self.X = df.iloc[:, 1:9].values
         elif view == 'rgb':
-            self.X = df.iloc[:, 9:]
+            self.X = df.iloc[:, 9:].values
 
         for label in df.iloc[:, 0:1].values:
             self.y.append(TARGET[label[0]])
