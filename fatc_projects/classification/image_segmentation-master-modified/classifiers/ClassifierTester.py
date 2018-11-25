@@ -33,7 +33,7 @@ class ClassifierTester:
 
         y = np.asarray(map(lambda i:classes.index(i), y))
 
-        skf = StratifiedKFold(n_splits=n, random_state=42, shuffle=True)  # 10 rodadas
+        skf = StratifiedKFold(n_splits=n, shuffle=True)  # 10 rodadas
 
         accuracies_bayes_complete = []
         accuracies_bayes_shape = []
