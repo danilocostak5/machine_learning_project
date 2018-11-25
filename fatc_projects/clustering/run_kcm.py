@@ -9,7 +9,7 @@ from sklearn.metrics.cluster import adjusted_rand_score
 
 
 if __name__ == '__main__':
-    datadir='segmentation_2.test'
+    datadir='../../data/segmentation_2.test'
 
     df = pd.read_csv(datadir, sep=',')
     mydata = Dataset()

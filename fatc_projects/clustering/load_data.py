@@ -42,7 +42,7 @@ class Dataset(object):
 
 if __name__ == '__main__':
 
-    datadir='segmentation_2.test'
+    datadir='../../data/segmentation_2.test'
     X, y = [], []
 
     with open(datadir) as csvfile:
@@ -59,6 +59,7 @@ if __name__ == '__main__':
     mydata = Dataset()
     mydata.load(df, 'rgb')
     print(np.random.choice(np.arange(10), 7, replace=False))
+    print(mydata.X)
     # for s in mydata.samples:
     #     print("{:d} : {} -> {} \n".format(s.index, s.target, s.features))
     #     break
