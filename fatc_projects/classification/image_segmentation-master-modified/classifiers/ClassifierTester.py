@@ -27,7 +27,7 @@ class ClassifierTester:
         y = dataframe.iloc[:, 0].values
 
         scaler = preprocessing.MinMaxScaler()
-        # X = scaler.fit_transform(X)
+        X = scaler.fit_transform(X)
   
         classes = sorted(set(y.ravel()))
 
