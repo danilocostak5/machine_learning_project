@@ -62,9 +62,9 @@ class ClassifierTester:
 
             # Bayes classifier - working solution 1
             classifier_bayes_complete = NaiveBayes()
-            classifier_bayes_complete.fit(rgb_view_train, y_train)
+            classifier_bayes_complete.fit(complete_view_train, y_train)
             classifier_bayes_shape = NaiveBayes()
-            classifier_bayes_shape.fit(rgb_view_train, y_train)
+            classifier_bayes_shape.fit(shape_view_train, y_train)
             classifier_bayes_rgb = NaiveBayes()
             classifier_bayes_rgb.fit(rgb_view_train, y_train)
 
@@ -74,9 +74,9 @@ class ClassifierTester:
             classifier_knn_shape = KnnClassifier(shape_view_train, y_train, 3, classes)
             classifier_knn_rgb = KnnClassifier(rgb_view_train, y_train, 3, classes)
         
-            posteriori_knn_complete = classifier_knn_complete.compute_posteriors(complete_view_test, y_test, weighted=False)
-            posteriori_knn_shape = classifier_knn_shape.compute_posteriors(shape_view_test, y_test, weighted=False)
-            posteriori_knn_rgb = classifier_knn_rgb.compute_posteriors(rgb_view_test, y_test, weighted=False)
+            posteriori_knn_complete = classifier_knn_complete.compute_posteriors(complete_view_test, y_test)
+            posteriori_knn_shape = classifier_knn_shape.compute_posteriors(shape_view_test, y_test)
+            posteriori_knn_rgb = classifier_knn_rgb.compute_posteriors(rgb_view_test, y_test)
 
             posteriori_bayes_complete = classifier_bayes_complete.predict(complete_view_test)
             posteriori_bayes_shape = classifier_bayes_shape.predict(shape_view_test)
