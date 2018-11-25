@@ -27,7 +27,7 @@ class ClassifierTester:
         y = dataframe.iloc[:, 0].values
 
         scaler = preprocessing.MinMaxScaler()
-        X = scaler.fit_transform(X)
+        # X = scaler.fit_transform(X)
   
         classes = sorted(set(y.ravel()))
 
@@ -74,12 +74,12 @@ class ClassifierTester:
             classifier_knn_shape = KnnClassifier(shape_view_train, y_train, 3, classes)
             classifier_knn_rgb = KnnClassifier(rgb_view_train, y_train, 3, classes)
         
-            posteriori_knn_complete = classifier_knn_complete.compute_posteriors(complete_view_test, y_test)
-            posteriori_knn_shape = classifier_knn_shape.compute_posteriors(shape_view_test, y_test)
-            posteriori_knn_rgb = classifier_knn_rgb.compute_posteriors(rgb_view_test, y_test)
+            posteriori_knn_complete = classifier_knn_complete.compute_posteriors(complete_view_test, y_test, weighted=False)
+            posteriori_knn_shape = classifier_knn_shape.compute_posteriors(shape_view_test, y_test, weighted=False)
+            posteriori_knn_rgb = classifier_knn_rgb.compute_posteriors(rgb_view_test, y_test, weighted=False)
 
-            posteriori_bayes_complete = classifier_bayes_complete.predict(rgb_view_test)
-            posteriori_bayes_shape = classifier_bayes_shape.predict(rgb_view_test)
+            posteriori_bayes_complete = classifier_bayes_complete.predict(complete_view_test)
+            posteriori_bayes_shape = classifier_bayes_shape.predict(shape_view_test)
             posteriori_bayes_rgb = classifier_bayes_rgb.predict(rgb_view_test)
 
             classifier_max_rule_rgb = MaxRuleClassifier()
