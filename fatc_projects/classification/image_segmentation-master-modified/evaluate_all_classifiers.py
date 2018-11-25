@@ -25,19 +25,3 @@ out_full = open('result_pickles/accuracies_all.pickle', 'wb')
 pickle.dump(accuracies_full, out_full)
 
 out_full.close()
-
-
-
-# print 'Testing full view'
-# dv = DataVectorizer(filename='result_pickles/full_view.pickle')
-# accuracies_full = []
-# for i in xrange(30):
-#     print 'iteration', i, 'of 30-------------'
-#     new_accuracies = ClassifierTester.make_n_fold_test(dv, 10)
-#     accuracies_full.append(new_accuracies)
-
-# out_full = open('result_pickles/accuracies_all.pickle', 'wb')
-
-# pickle.dump(accuracies_full, out_full)
-
-# out_full.close()
