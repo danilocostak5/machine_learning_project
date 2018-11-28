@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 
+import os
 import time
+import pickle
 import numpy as np
 import pandas as pd
 from kcm import KCM_F_GH
@@ -9,7 +11,11 @@ from sklearn.metrics.cluster import adjusted_rand_score
 
 
 if __name__ == '__main__':
+
     datadir='../../data/segmentation_2.test'
+    result_dir = '../../results/clustering'
+    result_file = 'all_results.res'
+    bresult_file = 'best_result.res'
 
     df = pd.read_csv(datadir, sep=',')
     mydata = Dataset()
@@ -56,15 +62,30 @@ if __name__ == '__main__':
         res_cluster.append(kcm.clusters)
         res_obj_to_cluster.append(kcm.obj_to_cluster)
         res_hp.append(kcm.hp)
+    if not os.path.exists(result_dir):
+        os.makedirs(result_dir)
+    with open((os.path.join(result_dir, result_file), 'w') as fpick:
+        res_dict = {'res_obj_function':res_obj_function,
+                    'res_cluster':res_cluster,
+                    'res_obj_to_cluster':res_obj_to_cluster,
+                    'res_hp':res_hp}
+        pickle.dump(res_dict, result_file)
+    with open((os.path.join(result_dir, bresult_file), 'w') as fpick:
+        index = np.argmin(res_obj_function)
+        res_dict = {'res_obj_function':res_obj_function[index],
+                    'res_cluster':res_cluster[index],
+                    'res_obj_to_cluster':res_obj_to_cluster[index],
+                    'res_hp':res_hp[index],
+                    'ARI':adjusted_rand_score(mydata.y, list(res_obj_to_cluster[index].values()))}
 
     print('####### Result #######')
     index = np.argmin(res_obj_function)
     print(index)
-    print('Objective Fuction > ', res_obj_function[index])
+    print('Objective Fuction ==> ', res_obj_function[index])
     # print('Clusters > ', res_cluster[index])
     for i in range(len(res_cluster[index])):
         print('Cluster[{}] has {} elements\n'.format(i, len(res_cluster[index][i])))
     print('Hiperparams ==> ', res_hp[index])
     # score = rand_score(kcm.X, kcm.y, res_cluster[index])
     score = adjusted_rand_score(mydata.y, list(res_obj_to_cluster[index].values()))
-    print('Adjusted Rand Score > ', score)
+    print('Adjusted Rand Score ==> ', score)
