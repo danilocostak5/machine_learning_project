@@ -18,9 +18,7 @@ public final class LoadData {
 	private static final LoadData INSTANCE = new LoadData();
 	private static BufferedReader bfr = null;
 
-	// Private method.
-	private LoadData() {
-	}
+	private LoadData() {}
 
 	// Returns my instance.
 	public static LoadData getInstance() {
@@ -31,7 +29,8 @@ public final class LoadData {
 	 * Receives a path to the segmentation csv-like file.
 	 *
 	 * @param path
-	 * @return A map <id, Map<y, X>> with the the id and other map with targets (Integers) and the features (Double).
+	 * @return A map <id, Map<y, X>> with the the id and other map with targets
+	 *         (Integers) and the features (Double).
 	 * @throws IOException
 	 */
 	public Map<Integer, Map<Integer, List<Double>>> read(String path) throws IOException {
@@ -65,9 +64,9 @@ public final class LoadData {
 		Map<Integer, Map<Integer, List<Double>>> map = LoadData.getInstance().read("../../../data/segmentation_2.test");
 
 		List<List<Double>> values = new ArrayList<>();
-		
-		for (Map<Integer, List<Double>> yX: map.values()) {
-			for (List<Double> example: yX.values()) {
+
+		for (Map<Integer, List<Double>> yX : map.values()) {
+			for (List<Double> example : yX.values()) {
 //				System.out.println(example.stream().
 //						map(Object::toString).
 //						collect(Collectors.joining(" - ")));
@@ -77,9 +76,7 @@ public final class LoadData {
 //		System.out.println(map.keySet().size());
 		Double[][] matValues = Util.normalize(values);
 		for (Double[] features : matValues) {
-			System.out.println(Arrays.stream(features).
-					map(Object::toString).
-					collect(Collectors.joining(" - ")));
+			System.out.println(Arrays.stream(features).map(Object::toString).collect(Collectors.joining(" - ")));
 		}
 
 	}
