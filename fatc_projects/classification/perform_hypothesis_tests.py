@@ -13,7 +13,7 @@ def execute_friedman_test():
     todas_acuracias = pickle.load(open('resultados_modelos/accuracies_all_with_scale.pickle', 'rb'))
     acuracias_juntas = []
 
-    tam_test = len(todas_acuracias)*len(todas_acuracias[0]['accuracies_bayes_rgb'])
+    num_experimentos = len(todas_acuracias)*len(todas_acuracias[0]['accuracies_bayes_rgb'])
     nb_classificadores = len(todas_acuracias[0])
 
     ranks_matrix = []
@@ -46,10 +46,10 @@ def execute_friedman_test():
 
     sum_squared_ranks = float(np.sum(pow(mean_ranks, 2)))
 
-    chi_square = ((12.0*tam_test)/(k*(k+1)))*(sum_squared_ranks - k*pow(k+1,2)/4.0)
-    estatistica = ((tam_test - 1)*chi_square)/(tam_test*(k-1) - chi_square)
+    chi_square = ((12.0*num_experimentos)/(k*(k+1)))*(sum_squared_ranks - k*pow(k+1,2)/4.0)
+    estatistica = ((num_experimentos - 1)*chi_square)/(num_experimentos*(k-1) - chi_square)
 
-    print ('tam_test: {}'.format(tam_test))
+    print ('num_experimentos: {}'.format(num_experimentos))
     print ('k (nº de classificadores): {}'.format(k))
     print ('Estatística computada: {}'.format(estatistica))
 
@@ -57,16 +57,16 @@ def execute_friedman_test():
 
     if estatistica > compare_val:
         print('Resultado do Teste de Friedman: os classificadores são diferentes')
-        execute_nemenyi_test(mean_ranks, k, tam_test)
+        execute_nemenyi_test(mean_ranks, k, num_experimentos)
     else:
         print('Resultado do Teste de Friedman: os classificadores são iguais')
 
-def execute_nemenyi_test(mean_ranks, k, tam_test):
+def execute_nemenyi_test(mean_ranks, k, num_experimentos):
     ########################  TESTE DE NEMENYI #########################
 
     print("\n\nIniciando teste de Nemenyi")
     q0 = 2.948 # sete modelos a serem comparados
-    critical_val = q0*np.sqrt(k*(k+1)/(6*float(tam_test)))
+    critical_val = q0*np.sqrt(k*(k+1)/(6*float(num_experimentos)))
     print ('Diferença crítica para o teste de Nemenyi: {}\n'.format(critical_val))
 
     name_of_classifiers = ['bayes_complete', 'bayes rgb', 'bayes shape', 'knn_complete', 'knn rgb', 'knn shape', 'max_rule']
