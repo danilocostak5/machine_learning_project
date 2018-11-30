@@ -12,15 +12,15 @@ from sklearn.model_selection import StratifiedKFold
 def main():
     print 'Testando todas as views'
     df = pd.read_csv('data/segmentation.test.txt', sep=',')
-    accuracies_full = []
+    acuracias_completas = []
     for i in xrange(1, 30 + 1):
-        print 'Repetição', i, 'of 30-------------'
-        new_accuracies = execute_10fold_test(df, 10, apply_scale=True, apply_standarization=False)
-        accuracies_full.append(new_accuracies)
+        print 'Repetição', i, 'de 30'
+        new_acuracias = execute_10fold_test(df, 10, apply_scale=True, apply_standarization=False)
+        acuracias_completas.append(new_acuracias)
 
-    out_full = open('resultados_modelos/accuracies_all_with_scale.pickle', 'wb')
-    pickle.dump(accuracies_full, out_full)
-    out_full.close()
+    out_completas = open('resultados_modelos/acuracias_all_with_scale.pickle', 'wb')
+    pickle.dump(acuracias_completas, out_completas)
+    out_completas.close()
 
 def execute_10fold_test(dataframe, n, apply_scale=True, apply_standarization=False):
         X = dataframe.iloc[:, 1:].values
@@ -39,13 +39,13 @@ def execute_10fold_test(dataframe, n, apply_scale=True, apply_standarization=Fal
 
         skf = StratifiedKFold(n_splits=n, shuffle=True)  # 10 rodadas
 
-        accuracies_bayes_complete = []
-        accuracies_bayes_shape = []
-        accuracies_bayes_rgb = []
-        accuracies_knn_complete = []
-        accuracies_knn_shape = []
-        accuracies_knn_rgb = []
-        accuracies_max_rule = []
+        acuracias_bayes_complete = []
+        acuracias_bayes_shape = []
+        acuracias_bayes_rgb = []
+        acuracias_knn_complete = []
+        acuracias_knn_shape = []
+        acuracias_knn_rgb = []
+        acuracias_max_rule = []
 
         for idx, (train_index, test_index) in enumerate(skf.split(X, y)):
             print 'Fold', idx+1 , 'de', n
@@ -86,27 +86,35 @@ def execute_10fold_test(dataframe, n, apply_scale=True, apply_standarization=Fal
             classifier_max_rule_rgb = MaxRuleClassifier()
             posteriori_regra_max_complete = classifier_max_rule_rgb.calcular_regra_max(posteriori_bayes_complete, posteriori_bayes_shape, posteriori_bayes_rgb, posteriori_knn_complete, posteriori_knn_shape, posteriori_knn_rgb, priori)
 
-            accuracies_bayes_complete.append(computar_acertos(posteriori_bayes_complete, y_test))
-            accuracies_bayes_shape.append(computar_acertos(posteriori_bayes_shape, y_test))
-            accuracies_bayes_rgb.append(computar_acertos(posteriori_bayes_rgb, y_test))
+            acuracias_bayes_complete.append(computar_acertos(posteriori_bayes_complete, y_test))
+            acuracias_bayes_shape.append(computar_acertos(posteriori_bayes_shape, y_test))
+            acuracias_bayes_rgb.append(computar_acertos(posteriori_bayes_rgb, y_test))
 
-            accuracies_knn_complete.append(computar_acertos(posteriori_knn_complete, y_test))
-            accuracies_knn_shape.append(computar_acertos(posteriori_knn_shape, y_test))
-            accuracies_knn_rgb.append(computar_acertos(posteriori_knn_rgb, y_test))
+            acuracias_knn_complete.append(computar_acertos(posteriori_knn_complete, y_test))
+            acuracias_knn_shape.append(computar_acertos(posteriori_knn_shape, y_test))
+            acuracias_knn_rgb.append(computar_acertos(posteriori_knn_rgb, y_test))
 
-            accuracies_max_rule.append(computar_acertos(posteriori_regra_max_complete, y_test))
+            acuracias_max_rule.append(computar_acertos(posteriori_regra_max_complete, y_test))
    
-        accuracies = {
-            'accuracies_bayes_complete' : accuracies_bayes_complete,
-            'accuracies_bayes_shape': accuracies_bayes_shape,
-            'accuracies_bayes_rgb': accuracies_bayes_rgb,
-            'accuracies_knn_complete': accuracies_knn_complete,
-            'accuracies_knn_shape': accuracies_knn_shape,
-            'accuracies_knn_rgb': accuracies_knn_rgb,
-            'accuracies_max_rule': accuracies_max_rule
+        acuracias = {
+            'acuracias_bayes_complete' : acuracias_bayes_complete,
+            'acuracias_bayes_shape': acuracias_bayes_shape,
+            'acuracias_bayes_rgb': acuracias_bayes_rgb,
+            'acuracias_knn_complete': acuracias_knn_complete,
+            'acuracias_knn_shape': acuracias_knn_shape,
+            'acuracias_knn_rgb': acuracias_knn_rgb,
+            'acuracias_max_rule': acuracias_max_rule
         }
+
+        print('acuracias_bayes_complete: {}'.format(np.mean(acuracias_bayes_complete)))
+        print('acuracias_bayes_shape: {}'.format(np.mean(acuracias_bayes_shape)))
+        print('acuracias_bayes_rgb: {}'.format(np.mean(acuracias_bayes_rgb)))
+        print('acuracias_knn_complete {}'.format(np.mean(acuracias_knn_complete)))
+        print('acuracias_knn_shape {}'.format(np.mean(acuracias_knn_shape)))
+        print('acuracias_knn_rgb {}'.format(np.mean(acuracias_knn_rgb)))
+        print('acuracias_max_rule {}\n'.format(np.mean(acuracias_max_rule)))
         
-        return accuracies
+        return acuracias
 
 def computar_acertos(posterioris, y_test):
     y_pred = np.argmax(posterioris, axis=1)
