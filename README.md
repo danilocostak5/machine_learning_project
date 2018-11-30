@@ -1,5 +1,5 @@
-# Aprendizagem de Máquina's projects repository
+# Machine Learning projects repository
 
 ## Description
 
-This repository includes Prof. Chico's clustering and classification tasks as well as Prof. Cleber's project.
+This repository includes Prof. Francisco's clustering and classification tasks.
