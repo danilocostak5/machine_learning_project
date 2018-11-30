@@ -50,7 +50,7 @@ def execute_friedman_test():
     estatistica = ((num_experimentos - 1)*chi_square)/(num_experimentos*(k-1) - chi_square)
 
     print ('num_experimentos: {}'.format(num_experimentos))
-    print ('chi quadrado: '.format(chi_square))
+    print ('qui quadrado: {}'.format(chi_square))
     print ('k (nº de classificadores): {}'.format(k))
     print ('Estatística computada: {}'.format(estatistica))
 
