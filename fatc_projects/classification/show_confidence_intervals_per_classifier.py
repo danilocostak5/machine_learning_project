@@ -31,44 +31,44 @@ print ("Bayes Complete")
 ic_bayes_complete = create_IC_interval(bayes_complete)
 print 'Mean: ', ic_bayes_complete[0]
 print 'Std: ', ic_bayes_complete[1]
-print 'IC 95: [', ic_bayes_complete[2], ',' , ic_bayes_complete[3], ']'
+print 'IC 95: [', ic_bayes_complete[2], ',' , ic_bayes_complete[3], ']\n'
 
 print ("Bayes RGB")
 ic_bayes_rgb = create_IC_interval(bayes_rgb)
 print 'Mean: ', ic_bayes_rgb[0]
 print 'Std: ', ic_bayes_rgb[1]
-print 'IC 95: [', ic_bayes_rgb[2], ',' , ic_bayes_rgb[3], ']'
+print 'IC 95: [', ic_bayes_rgb[2], ',' , ic_bayes_rgb[3], ']\n'
 
 print ("Bayes Shape")
 ic_bayes_shape = create_IC_interval(bayes_shape)
 print 'SHAPE: '
 print 'Mean: ', ic_bayes_shape[0]
 print 'Std', ic_bayes_shape[1]
-print 'IC 95 [', ic_bayes_shape[2], ',' , ic_bayes_shape[3], ']'
+print 'IC 95 [', ic_bayes_shape[2], ',' , ic_bayes_shape[3], ']\n'
 
 print("KNN complete")
 ic_knn_complete = create_IC_interval(knn_complete)
 print 'Mean: ', ic_knn_complete[0]
 print 'Std: ', ic_knn_complete[1]
-print 'IC 95 [', ic_knn_complete[2], ',' , ic_knn_complete[3], ']'
+print 'IC 95 [', ic_knn_complete[2], ',' , ic_knn_complete[3], ']\n'
 
 print("KNN RGB")
 ic_knn_rgb = create_IC_interval(knn_rgb)
 print 'Mean: ', ic_knn_rgb[0]
 print 'Std: ', ic_knn_rgb[1]
-print 'IC 95: [', ic_knn_rgb[2], ',' , ic_knn_rgb[3], ']'
+print 'IC 95: [', ic_knn_rgb[2], ',' , ic_knn_rgb[3], ']\n'
 
 print("KNN shape")
 ic_knn_shape = create_IC_interval(knn_shape)
 print 'Mean: ', ic_knn_shape[0]
 print 'Std: ', ic_knn_shape[1]
-print 'IC 95: [', ic_knn_shape[2], ',' , ic_knn_shape[3], ']'
+print 'IC 95: [', ic_knn_shape[2], ',' , ic_knn_shape[3], ']\n'
 
 print 'MAX RULE CLASSIFIERS -----------'
 ic_max_rule = create_IC_interval(max_rule)
 print 'Mean: ', ic_max_rule[0]
 print 'Std: ', ic_max_rule[1]
-print 'IC 95: [', ic_max_rule[2], ',' , ic_max_rule[3], ']'
+print 'IC 95: [', ic_max_rule[2], ',' , ic_max_rule[3], ']\n'
 
 
 print 'Salvando histogramas'
