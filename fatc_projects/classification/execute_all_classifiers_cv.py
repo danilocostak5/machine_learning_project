@@ -10,7 +10,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import StratifiedKFold
 
 def main():
-    print 'TEstando todas as views'
+    print 'Testando todas as views'
     df = pd.read_csv('data/segmentation.test.txt', sep=',')
     accuracies_full = []
     for i in xrange(1, 30 + 1):
@@ -18,7 +18,7 @@ def main():
         new_accuracies = execute_10fold_test(df, 10, apply_scale=True, apply_standarization=False)
         accuracies_full.append(new_accuracies)
 
-    out_full = open('resultados_modelos/accuracies_all_with_scale_sanity_check.pickle', 'wb')
+    out_full = open('resultados_modelos/accuracies_all_with_scale.pickle', 'wb')
     pickle.dump(accuracies_full, out_full)
     out_full.close()
 
@@ -58,13 +58,10 @@ def execute_10fold_test(dataframe, n, apply_scale=True, apply_standarization=Fal
             shape_view_train = X_train[:, :9]
             rgb_view_train = X_train[:, 9:]
 
-            # X_test, y_test = X_test[:10], y_test[:10] # sanity check
-
             complete_view_test = X_test  # visao 1
             shape_view_test = X_test[:, :9]  # visao 2
             rgb_view_test = X_test[:, 9:]  # visao 3
 
-            # Bayes classifier - working solution 1
             classifier_bayes_complete = NaiveBayes()
             classifier_bayes_complete.fit(complete_view_train, y_train)
             classifier_bayes_shape = NaiveBayes()

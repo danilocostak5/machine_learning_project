@@ -15,11 +15,11 @@ knn_shape = ("KNN Shape", np.array([a['accuracies_knn_shape'] for a in all_accur
 max_rule = ("Regra do Máximo", np.array([a['accuracies_max_rule'] for a in all_accuracies]))
 
 # ESCOLHA O CLASSIFICADOR QUE DESEJA AVALIAR DAS OPCOES ACIMA
-selected_classifier = max_rule
+classificador_selecionado = max_rule
 
 print("Resultados (30 repetições)")
-print("Classificador: {}".format(selected_classifier[0]))
-selected_classifier_results = list(selected_classifier[1].mean(axis=1))
-selected_classifier_results = map(lambda i:"{:0.2f}".format(i*100), selected_classifier_results)
-for i, acc in enumerate(selected_classifier_results):
+print("Classificador: {}".format(classificador_selecionado[0]))
+classificador_selecionado_resultados = list(classificador_selecionado[1].mean(axis=1))
+classificador_selecionado_resultados = map(lambda i:"{:0.2f}".format(i*100), classificador_selecionado_resultados)
+for i, acc in enumerate(classificador_selecionado_resultados):
     print("{},{}".format(i+1, acc))
