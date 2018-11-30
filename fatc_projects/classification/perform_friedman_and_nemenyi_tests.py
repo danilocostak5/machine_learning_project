@@ -8,6 +8,9 @@ def find_index(array_var, title):
             return i + 1
     return -1
 
+########################  TESTE DE FRIEDMAN #########################
+print("Iniciando teste de Friedman")
+
 # ESCOLHA O ARQUIVO COM AS ACURACIAS DENTRO DA PASTA "resultados_modelos" - COM OU SEM NORMALIZACAO
 todas_acuracias = pickle.load(open('resultados_modelos/accuracies_all_with_scale.pickle', 'rb'))
 acuracias_juntas = []
@@ -47,21 +50,23 @@ sum_squared_ranks = float(np.sum(pow(mean_ranks, 2)))
 
 chi_square = ((12.0*tam_test)/(k*(k+1)))*(sum_squared_ranks - k*pow(k+1,2)/4.0)
 estatistica = ((tam_test - 1)*chi_square)/(tam_test*(k-1) - chi_square)
-print 'tam_test', tam_test
-print 'k', k
-print 'Estatística computada: ', estatistica
+
+print ('tam_test: {}'.format(tam_test))
+print ('k (nº de classificadores): {}'.format(k))
+print ('Estatística computada: {}'.format(estatistica))
 
 compare_val = 2.4082 # http://www.socr.ucla.edu/applets.dir/f_table.html (valor critico para (7-1) e (2100-1)*(7-1) graus de liberdade)
 
 if estatistica > compare_val:
-    print('Os classificadores são diferentes')
+    print('Resultado do Teste de Friedman: os classificadores são diferentes')
 else:
-    print('Os classificadores são iguais')
+    print('Resultado do Teste de Friedman: os classificadores são iguais')
 
-# teste de Nemenyi
+########################  TESTE DE NEMENYI #########################
+print("\n\nIniciando teste de Nemenyi")
 q0 = 2.948 # sete modelos a serem comparados
 critical_val = q0*np.sqrt(k*(k+1)/(6*float(tam_test)))
-print ('Diferença crítica para o teste de Nemenyi: ', critical_val)
+print ('Diferença crítica para o teste de Nemenyi: {}\n'.format(critical_val))
 
 name_of_classifiers = ['bayes_complete', 'bayes rgb', 'bayes shape', 'knn_complete', 'knn rgb', 'knn shape', 'max_rule']
 for i, n1 in enumerate(name_of_classifiers):

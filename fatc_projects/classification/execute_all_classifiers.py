@@ -10,7 +10,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import StratifiedKFold
 
 def main():
-    print 'Testing full and separated views'
+    print 'TEstando todas as views'
     df = pd.read_csv('data/segmentation.test.txt', sep=',')
     accuracies_full = []
     for i in xrange(1, 30 + 1):
