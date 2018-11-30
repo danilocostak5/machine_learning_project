@@ -9,16 +9,19 @@ from sklearn.metrics.pairwise import euclidean_distances
 # Calcula o valor de gama com base na distância euclidiana dos dados
 
 class KCM_F_GH(object):
-    def __init__(self, c, p, data):
+    def __init__(self, c, p, data, norm=True,seed=None):
         self.c = c
         self.p = p
         self.X, self.y = data.X, data.y
+        self.norm = norm
         self.gamma = 0.
         self.hp = None # variances vector
         self.clusters = None
         self.K_dist_mat = np.zeros((len(self.X), len(self.X))).astype(float) # all against all in the feature kernel space util matrix for a many computations
         self.obj_to_cluster = {} # has the id => cluster format
         self.part2 = None # For optimization stores the values of the second somatory in the objective function.
+        if seed is not None:
+            np.random.seed(seed)
 
     def normalize(self):
         self.X = (self.X - self.X.min(axis=0)) / (self.X.max(axis=0) - self.X.min(axis=0))
@@ -63,7 +66,9 @@ class KCM_F_GH(object):
     # atribuição inicial dos objetos ao cluster conforme
     def initialization(self):
         print("Initializing...")
-        self.normalize()
+        if self.norm:
+            print("Normalizing")
+            self.normalize()
         self.calc_gamma()
         self.init_hiperparams()
         self.init_clusters()
@@ -132,7 +137,7 @@ class KCM_F_GH(object):
                 # res += self.K_dist_mat[l, r] * np.power(self.X[l] - self.X[r], 2)
                 res += self.calc_kernel(self.X[l], self.X[r]) * np.power(self.X[l] - self.X[r], 2) if l != r else 0.
         # return res / np.power(len(self.clusters[c]), 2)
-        return res / len(self.clusters[c])
+        return res / (len(self.clusters[c]) + 1e-5)
 
     # calcula o vetor de hyperparametros
     def update_hiperparams(self):
@@ -143,7 +148,7 @@ class KCM_F_GH(object):
         for i in range(self.c):
             pi_h_list += self.__all_against_all_cluster_wsum(i)
         num = np.power(pi_h_list.prod(axis=0), (1/self.p)) * self.gamma
-        self.hp = num / pi_h_list
+        self.hp = num / (pi_h_list + 1e-5)
 
     def __object_against_cluster_sum(self, k, c):
         """Executa o somatorio do objeto k contra todos em um cluster c da equação 24 com relação às features.
@@ -154,7 +159,7 @@ class KCM_F_GH(object):
         for l in self.clusters[c]:
             # res += self.K_dist_mat[k, l]
             res += self.calc_kernel(self.X[k], self.X[l]) if k != l else 0.
-        return (2 * res) / len(self.clusters[c])
+        return (2 * res) / (len(self.clusters[c]) + 1e-5)
 
     def __all_against_all_cluster_sum(self):
         """Executa o somatorio todos contra todos em um cluster c da equação 24 com relação às features. Resultado é ponderado pela cardinalidade do cluster ao quadrado.
@@ -166,7 +171,7 @@ class KCM_F_GH(object):
                 for r in self.clusters[i]:
                     # res[i] += self.K_dist_mat[l, r]
                     res[i] += self.calc_kernel(self.X[l], self.X[r]) if l != r else 0.
-            res[i] /= np.power(len(self.clusters[i]), 2)
+            res[i] /= (np.power(len(self.clusters[i]), 2) + 1e-5)
         return res
 
     # Not used because is too low
