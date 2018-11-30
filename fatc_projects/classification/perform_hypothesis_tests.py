@@ -2,8 +2,6 @@
 import pickle
 import numpy as np
 
-
-
 def main():
     execute_friedman_test()
 
