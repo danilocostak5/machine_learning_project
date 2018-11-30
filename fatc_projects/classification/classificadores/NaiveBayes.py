@@ -1,12 +1,6 @@
-# https://deeplearningcourses.com/c/data-science-supervised-machine-learning-in-python
-# https://www.udemy.com/data-science-supervised-machine-learning-in-python
-# This is an example of a Bayes classifier on MNIST data.
 from __future__ import print_function, division
 from future.utils import iteritems
 from builtins import range, input
-# Note: you may need to update your version of future
-# sudo pip install -U future
-
 
 import numpy as np
 import matplotlib.pyplot as plt
